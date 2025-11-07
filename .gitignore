@@ -39,3 +39,7 @@
 
 # debug information files
 *.dwo
+/viewer/.vs
+/viewer/viewer/x64
+viewer/viewer.vcxproj.filters
+viewer/viewer.vcxproj.user
