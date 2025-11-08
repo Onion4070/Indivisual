@@ -7,7 +7,7 @@ wxIMPLEMENT_APP(App);
 
 bool App::OnInit() {
 	// タイトル設定
-	MainFrame* mainFrame = new MainFrame("title: C++ GUI");
+	MainFrame* mainFrame = new MainFrame("Indivisual Viewer");
 
 	// フレームサイズ設定
 	mainFrame->SetSize(800, 600);
