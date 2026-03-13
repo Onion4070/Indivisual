@@ -33,6 +33,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 		if (m_port_choice->GetCount() == 0) return;
 		if (m_serial.IsOpen()) {
 			m_serial.Close();
+			m_controller.SetConnected(false);
 			std::cout << "Disconnected." << std::endl;
 			return;
 		}
@@ -44,8 +45,13 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 			m_controller.Update(data, len);
 		});
 
-		if (!ok) std::cerr << "Failed to open port." << std::endl;
-		// 接続処理の実装...
+		if (ok) {
+			m_controller.SetConnected(true);
+			std::cout << "Connected." << std::endl;
+		}
+		else {
+			std::cerr << "Failed to open port." << std::endl;
+		}
 	});
 
 	// ポート選択コンボボックスをクリックしたときにポートリストを更新

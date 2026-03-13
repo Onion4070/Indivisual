@@ -11,19 +11,14 @@ struct ControllerState {
 class ControllerStateManager
 {
 public:
-	void Update(const uint8_t* data, uint8_t len) {
-		std::lock_guard<std::mutex> lock(m_mutex);
-		memcpy(m_state.raw, data, len);
-		m_state.length = len;
-	}
-
-	ControllerState Get() {
-		std::lock_guard<std::mutex> lock(m_mutex);
-		return m_state;
-	}
+	void Update(const uint8_t* data, uint8_t len);
+	ControllerState Get();
+	void SetConnected(bool connected);
+	bool IsConnected();
 
 private:
 	ControllerState m_state;
 	std::mutex m_mutex;
+	bool m_connected = false;
 };
 

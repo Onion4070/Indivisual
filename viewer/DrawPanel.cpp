@@ -81,11 +81,6 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     }
 
     // 描画処理
-    auto state = m_controller.Get();
-    for (int i = 0; i < state.length; i++) {
-        printf("%02X ", state.raw[i]);
-    }
-    std::cout << std::endl;
 
     // 回る円
     gdc.SetPen(m_blue_pen);
@@ -105,4 +100,16 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
 
     gdc.SetTextForeground(*wxWHITE);
     gdc.DrawText(wxString::Format("FPS: %d (%d fps target)", m_fps, m_target_fps), 10, 10);
+
+    if (!m_controller.IsConnected()) {
+        gdc.SetTextForeground(*wxWHITE);
+        gdc.DrawText("Not connected.", 10, 40);
+        return;
+    }
+    auto state = m_controller.Get();
+    for (int i = 0; i < state.length; i++) {
+        printf("%02X ", state.raw[i]);
+
+    }
+    std::cout << "\n";
 }
