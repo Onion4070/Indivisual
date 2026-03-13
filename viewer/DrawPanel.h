@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include "ControllerState.h"
+
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
 #include <wx/dcgraph.h>
@@ -9,7 +11,7 @@
 class DrawPanel : public wxPanel
 {
 public:
-    DrawPanel(wxWindow* parent);
+    DrawPanel(wxWindow* parent, ControllerStateManager& controller);
     virtual ~DrawPanel();
 
 private:
@@ -19,6 +21,8 @@ private:
     // 描画コアロジック
     void ClearBackground(wxGCDC& gdc);
     void RenderFrame(wxGCDC& gdc);
+
+    ControllerStateManager& m_controller;
 
     // スレッド関連
     std::thread m_timer_thread;

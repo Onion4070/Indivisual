@@ -22,7 +22,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 
 
 	// 描画用パネル
-	m_draw_panel = new DrawPanel(this);
+	m_draw_panel = new DrawPanel(this, m_controller);
 
 	sizer->Add(toolbar,      0, wxEXPAND);
 	sizer->Add(m_draw_panel, 1, wxEXPAND);
@@ -31,9 +31,20 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 	// Connectボタンをクリックしたときのイベント
 	btn_connect->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
 		if (m_port_choice->GetCount() == 0) return;
-		wxString port = m_port_choice->GetString(m_port_choice->GetSelection());
+		if (m_serial.IsOpen()) {
+			m_serial.Close();
+			std::cout << "Disconnected." << std::endl;
+			return;
+		}
+		wxString selected = m_port_choice->GetString(m_port_choice->GetSelection());
+		wxString port = selected.BeforeFirst(':');		// "COM3: ..." -> "COM3"
 		std::cout << "Connecting to " << port << std::endl;
 
+		bool ok = m_serial.Open(port.ToStdString(), [this](const uint8_t* data, uint8_t len) {
+			m_controller.Update(data, len);
+		});
+
+		if (!ok) std::cerr << "Failed to open port." << std::endl;
 		// 接続処理の実装...
 	});
 

@@ -10,9 +10,8 @@ wxBEGIN_EVENT_TABLE(DrawPanel, wxPanel)
 EVT_PAINT(DrawPanel::OnPaint)
 wxEND_EVENT_TABLE()
 
-
-DrawPanel::DrawPanel(wxWindow* parent)
-	: wxPanel(parent, wxID_ANY), m_running(false) {
+DrawPanel::DrawPanel(wxWindow* parent, ControllerStateManager& controller)
+	: wxPanel(parent, wxID_ANY), m_running(false), m_controller(controller) {
     // 背景を黒に設定
     SetBackgroundStyle(wxBG_STYLE_PAINT);
     SetBackgroundColour(*wxBLACK);
@@ -82,6 +81,11 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     }
 
     // 描画処理
+    auto state = m_controller.Get();
+    for (int i = 0; i < state.length; i++) {
+        printf("%02X ", state.raw[i]);
+    }
+    std::cout << std::endl;
 
     // 回る円
     gdc.SetPen(m_blue_pen);
