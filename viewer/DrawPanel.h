@@ -2,18 +2,38 @@
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
 #include <wx/dcgraph.h>
+#include <thread>
+#include <atomic>
+#include <chrono>
 
-// 描画用パネル
-class DrawPanel : public wxPanel
-{
+class DrawPanel : public wxPanel {
 public:
-	DrawPanel(wxWindow* parent);
+    DrawPanel(wxWindow* parent);
+    virtual ~DrawPanel();
+
 private:
-	// 描画イベントハンドラ
-	void OnPaint(wxPaintEvent& event);
-	void ClearBackground(wxGCDC& gdc);
+    // 描画イベントハンドラ
+    void OnPaint(wxPaintEvent& event);
 
-	// イベントテーブル宣言
-	wxDECLARE_EVENT_TABLE();
+    // 描画コアロジック
+    void ClearBackground(wxGCDC& gdc);
+    void RenderFrame(wxGCDC& gdc);
+
+    // スレッド関連
+    std::thread m_timer_thread;
+    std::atomic<bool> m_running;
+
+    // 描画リソース・状態管理
+    wxPen m_blue_pen;
+    wxPen m_any_color_pen;
+
+    int m_fps = 0;
+    int m_frame_count = 0;
+    wxLongLong m_last_time = 0;
+
+    // アニメーション用変数
+    int m_anim_x = 0;
+    int m_anim_y = 0;
+
+    wxDECLARE_EVENT_TABLE();
 };
-
