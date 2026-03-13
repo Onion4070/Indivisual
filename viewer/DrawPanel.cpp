@@ -10,9 +10,9 @@ wxBEGIN_EVENT_TABLE(DrawPanel, wxPanel)
 EVT_PAINT(DrawPanel::OnPaint)
 wxEND_EVENT_TABLE()
 
-DrawPanel::DrawPanel(wxWindow* parent)
-    : wxPanel(parent, wxID_ANY), m_running(false) {
 
+DrawPanel::DrawPanel(wxWindow* parent)
+	: wxPanel(parent, wxID_ANY), m_running(false) {
     // 背景を黒に設定
     SetBackgroundStyle(wxBG_STYLE_PAINT);
     SetBackgroundColour(*wxBLACK);
@@ -31,12 +31,10 @@ DrawPanel::DrawPanel(wxWindow* parent)
         auto next_frame = std::chrono::steady_clock::now();
 
         while (m_running) {
-            // 120fps (8.333ms)
-			next_frame += std::chrono::microseconds(8333);
-			// 60fps (16.666ms)
-            //next_frame += std::chrono::microseconds(16666);
+            // 120fps = 8.333 ms = 8333 µs 
+            next_frame += std::chrono::microseconds(1'000'000 / m_target_fps);
 
-			// CPU負荷を抑えるためにスリープ
+            // CPU負荷を抑えるためにスリープ
             std::this_thread::sleep_until(next_frame);
 
             if (m_running) {
@@ -102,5 +100,5 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     gdc.DrawPolygon(8, points);
 
     gdc.SetTextForeground(*wxWHITE);
-    gdc.DrawText(wxString::Format("FPS: %d (120fps target)", m_fps), 10, 10);
+    gdc.DrawText(wxString::Format("FPS: %d (%d fps target)", m_fps, m_target_fps), 10, 10);
 }

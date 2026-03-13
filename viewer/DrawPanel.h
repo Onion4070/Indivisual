@@ -6,7 +6,8 @@
 #include <atomic>
 #include <chrono>
 
-class DrawPanel : public wxPanel {
+class DrawPanel : public wxPanel
+{
 public:
     DrawPanel(wxWindow* parent);
     virtual ~DrawPanel();
@@ -28,6 +29,7 @@ private:
     wxPen m_any_color_pen;
 
     int m_fps = 0;
+	int m_target_fps = 120;     // 目標FPS
     int m_frame_count = 0;
     wxLongLong m_last_time = 0;
 

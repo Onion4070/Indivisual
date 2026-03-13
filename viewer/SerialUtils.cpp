@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <setupapi.h>
 #include <devguid.h>
+#pragma comment(lib, "setupapi.lib")
 
 std::vector<SerialPortInfo> SerialUtils::GetSerialPorts() {
     std::vector<SerialPortInfo> ports;

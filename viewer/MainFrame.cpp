@@ -3,6 +3,9 @@
 #include <wx/wx.h>
 
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
+	// ウィンドウサイズ固定化
+	wxWindow::SetWindowStyle(wxDEFAULT_FRAME_STYLE & ~wxRESIZE_BORDER);
+
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
 	// 上部ツールバー
@@ -21,7 +24,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 	// 描画用パネル
 	m_draw_panel = new DrawPanel(this);
 
-	sizer->Add(toolbar,     0, wxEXPAND);
+	sizer->Add(toolbar,      0, wxEXPAND);
 	sizer->Add(m_draw_panel, 1, wxEXPAND);
 	this->SetSizer(sizer);
 
@@ -46,7 +49,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 void MainFrame::RefreshPorts() {
 	m_port_choice->Clear();
 	for (auto& p : SerialUtils::GetSerialPorts())
-		m_port_choice->Append(p.port + " - " + p.description);
+		m_port_choice->Append(p.port + ": " + p.description);
 	if (m_port_choice->GetCount() > 0)
 		m_port_choice->SetSelection(0);
 }
