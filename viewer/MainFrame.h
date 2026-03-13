@@ -10,6 +10,8 @@ public:
 	MainFrame(const wxString& title);
 
 private:
-	DrawPanel* m_drawPanel;
+	void RefreshPorts();
+	wxChoice* m_port_choice;
+	DrawPanel* m_draw_panel;
 };
 
