@@ -85,7 +85,7 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     // 回る円
     gdc.SetPen(m_blue_pen);
     gdc.SetBrush(wxBrush(*wxWHITE));
-    gdc.DrawCircle(400 + 300*sin(M_PI/180*m_anim_y), 300 + 100*cos(M_PI/180*m_anim_x), 50);
+    gdc.DrawCircle(400 + 300*sin(M_PI/180*m_anim_x), 300, 50);
     m_anim_x += 1;
     m_anim_y += 1;
 
@@ -106,10 +106,23 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
         gdc.DrawText("Not connected.", 10, 40);
         return;
     }
-    auto state = m_controller.Get();
-    for (int i = 0; i < state.length; i++) {
-        printf("%02X ", state.raw[i]);
 
+    auto state = m_controller.Get();
+
+    wxFont mono_font(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    gdc.SetFont(mono_font);
+
+    gdc.SetTextForeground(*wxWHITE);
+    wxString index;
+    wxString hex_str;
+    for (int i = 0; i < state.length; i++) {
+        index   += wxString::Format("%02d ", i);
+        hex_str += wxString::Format("%02X ", state.raw[i]);
     }
-    std::cout << "\n";
+    gdc.DrawText(index, 10, 30);
+    gdc.DrawText(hex_str, 10, 50);
+    //for (int i = 0; i < state.length; i++) {
+    //    printf("%02X ", state.raw[i]);
+    //}
+    //std::cout << "\n";
 }

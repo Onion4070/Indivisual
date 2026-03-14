@@ -21,7 +21,7 @@ bool App::OnInit() {
 #endif
 
 	// タイトル設定
-	MainFrame* mainFrame = new MainFrame("Indivisual Viewer");
+	MainFrame* mainFrame = new MainFrame("Indivisual");
 
 	// フレームサイズ設定
 	mainFrame->SetSize(800, 600);
