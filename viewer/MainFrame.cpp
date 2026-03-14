@@ -16,6 +16,13 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 	// COMポート選択
 	m_port_choice = new wxChoice(toolbar, wxID_ANY);
 
+	// Gamepad選択
+	m_gamepad_choice = new wxChoice(toolbar, wxID_ANY);
+	m_gamepad_choice->Append("Switch2 Pro Controller");
+	m_gamepad_choice->Append("Switch Pro Controller");
+	m_gamepad_choice->Append("Switch2 Joy-Con");
+	m_gamepad_choice->SetSelection(0);
+
 	// 接続ボタン
 	wxButton* btn_connect = new wxButton(toolbar, wxID_ANY, "Connect");
 
@@ -25,6 +32,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 	// ========== コンポーネント配置 ==========
 	toolbar_sizer->Add(new wxStaticText(toolbar, wxID_ANY, "Port :"), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	toolbar_sizer->Add(m_port_choice, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	toolbar_sizer->Add(new wxStaticText(toolbar, wxID_ANY, "Gamepad :"), 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	toolbar_sizer->Add(m_gamepad_choice, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	toolbar_sizer->Add(btn_connect, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	toolbar->SetSizer(toolbar_sizer);
 
