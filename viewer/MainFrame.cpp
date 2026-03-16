@@ -1,5 +1,6 @@
 ﻿#include "MainFrame.h"
 #include "SerialUtils.h"
+#include "ControllerState.h"
 #include <wx/wx.h>
 
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
@@ -59,6 +60,15 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 			std::cout << "Disconnected." << std::endl;
 			return;
 		}
+
+		// Gamepad切り替え
+		wxString type = m_gamepad_choice->GetStringSelection();
+		if (type == "Switch2 Pro Controller")
+			m_controller.SetGamepad(CONTROLLER_TYPE::SWITCH2_PRO);
+		if (type == "Switch Pro Controller")
+			m_controller.SetGamepad(CONTROLLER_TYPE::SWITCH_PRO);
+		if (type == "Switch2 Joy-Con")
+			m_controller.SetGamepad(CONTROLLER_TYPE::UNDEFINED);
 
 		// ポートリストから取得して接続
 		wxString selected = m_port_choice->GetString(m_port_choice->GetSelection());

@@ -23,3 +23,7 @@ bool ControllerStateManager::IsConnected() {
 	std::lock_guard<std::mutex> lock(m_mutex);
 	return m_connected;
 }
+
+void ControllerStateManager::SetGamepad(CONTROLLER_TYPE type) {
+	m_gamepad_type = type;
+}
