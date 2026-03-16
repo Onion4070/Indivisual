@@ -37,15 +37,27 @@ void SerialReader::ReceiveLoop() {
 		try {
 			uint8_t b;
 			asio::read(m_port, asio::buffer(&b, 1));
-			if (b != START) continue;
+			if (b != START) {
+				std::cout << "Invalid start byte" << "\n";
+				continue;
+			}
 
 			uint8_t len;
 			asio::read(m_port, asio::buffer(&len, 1));
 			asio::read(m_port, asio::buffer(buf, len));
 			asio::read(m_port, asio::buffer(&b, 1));
 
-			if (b != END) continue;
+			if (b != END) {
+				std::cout << "Invalid end byte" << std::endl;
+				continue;
+			}
 
+#ifdef _DEBUG
+			for (int i = 0; i < len; i++) {
+				printf("%02X ", buf[i]);
+			}
+			std::cout << "\n";
+#endif
 			++cnt;
 			auto now = std::chrono::steady_clock::now();
 			if (std::chrono::duration_cast<std::chrono::milliseconds>(now - freq_timer).count() >= 1000) {
@@ -58,7 +70,7 @@ void SerialReader::ReceiveLoop() {
 		}
 		catch (std::exception& e) {
 			std::cerr << e.what() << std::endl;
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			m_running = false;
 		}
 	}
 }
