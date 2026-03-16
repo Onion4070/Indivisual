@@ -64,11 +64,11 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 		// Gamepad切り替え
 		wxString type = m_gamepad_choice->GetStringSelection();
 		if (type == "Switch2 Pro Controller")
-			m_controller.SetGamepad(CONTROLLER_TYPE::SWITCH2_PRO);
+			m_controller.SetGamepad(ControllerType::SWITCH2_PRO);
 		if (type == "Switch Pro Controller")
-			m_controller.SetGamepad(CONTROLLER_TYPE::SWITCH_PRO);
+			m_controller.SetGamepad(ControllerType::SWITCH_PRO);
 		if (type == "Switch2 Joy-Con")
-			m_controller.SetGamepad(CONTROLLER_TYPE::UNDEFINED);
+			m_controller.SetGamepad(ControllerType::JOYCON2);
 
 		// ポートリストから取得して接続
 		wxString selected = m_port_choice->GetString(m_port_choice->GetSelection());

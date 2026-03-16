@@ -89,14 +89,14 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     m_anim_x += 1;
     m_anim_y += 1;
 
-	// 正八角形を描画
-    gdc.SetPen(m_any_color_pen);
-    wxPoint points[8];
-    for (int i = 0; i < 8; i++) {
-        double angle = i * (2 * M_PI / 8);
-        points[i] = wxPoint(500 + 50 * cos(angle), 100 + 50 * sin(angle));
-    }
-    gdc.DrawPolygon(8, points);
+	//// 正八角形を描画
+ //   gdc.SetPen(m_any_color_pen);
+ //   wxPoint points[8];
+ //   for (int i = 0; i < 8; i++) {
+ //       double angle = i * (2 * M_PI / 8);
+ //       points[i] = wxPoint(500 + 50 * cos(angle), 100 + 50 * sin(angle));
+ //   }
+ //   gdc.DrawPolygon(8, points);
 
     gdc.SetTextForeground(*wxWHITE);
     gdc.DrawText(wxString::Format("FPS: %d (%d fps target)", m_fps, m_target_fps), 10, 10);
@@ -108,6 +108,41 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     }
 
     auto state = m_controller.Get();
+
+    gdc.DrawCircle(200 + (int)(state.lx * 50), 200 + (int)(state.ly * 50), 50);
+    gdc.DrawCircle(200, 200, 5);
+    gdc.DrawCircle(400 + (int)(state.rx * 50), 400 + (int)(state.ry * 50), 50);
+    gdc.DrawCircle(400, 400, 5);
+
+    wxFont mono_font_big(36, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    gdc.SetFont(mono_font_big);
+
+    if (state.btn_a) gdc.DrawText("A", 300, 200);
+    if (state.btn_b) gdc.DrawText("B", 300, 200);
+    if (state.btn_x) gdc.DrawText("X", 300, 200);
+    if (state.btn_y) gdc.DrawText("Y", 300, 200);
+
+    if (state.btn_l) gdc.DrawText("L", 300, 200);
+    if (state.btn_r) gdc.DrawText("R", 300, 200);
+    if (state.btn_zl) gdc.DrawText("ZL", 300, 200);
+    if (state.btn_zr) gdc.DrawText("ZR", 300, 200);
+
+    if (state.btn_plus) gdc.DrawText("Plus", 300, 200);
+    if (state.btn_minus) gdc.DrawText("Minus", 300, 200);
+    if (state.btn_home) gdc.DrawText("Home", 300, 200);
+    if (state.btn_capture) gdc.DrawText("Capture", 300, 200);
+
+    if (state.btn_lstick) gdc.DrawText("Ls", 300, 200);
+    if (state.btn_rstick) gdc.DrawText("Rs", 300, 200);
+    if (state.btn_chat) gdc.DrawText("C", 300, 200);
+
+    if (state.btn_gl) gdc.DrawText("GL", 300, 200);
+    if (state.btn_gr) gdc.DrawText("GR", 300, 200);
+
+    if (state.dpad_up) gdc.DrawText("↑", 300, 200);
+    if (state.dpad_down) gdc.DrawText("↓", 300, 200);
+    if (state.dpad_left) gdc.DrawText("←", 300, 200);
+    if (state.dpad_right) gdc.DrawText("→", 300, 200);
 
     wxFont mono_font(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     gdc.SetFont(mono_font);

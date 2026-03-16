@@ -40,12 +40,19 @@ struct ControllerState {
 	uint8_t length = 0;
 };
 
-enum CONTROLLER_TYPE {
+enum class ControllerType {
 	UNDEFINED,
 	SWITCH_PRO,
 	SWITCH2_PRO,
 	JOYCON2,
 };
+
+namespace ControllerID {
+	constexpr uint8_t UNDEFINED = 0xFF;
+	constexpr uint8_t SWITCH_PRO = 0x30;
+	constexpr uint8_t SWITCH2_PRO = 0x09;
+	constexpr uint8_t JOYCON2 = 0x07;
+}
 
 class ControllerStateManager
 {
@@ -54,12 +61,12 @@ public:
 	ControllerState Get();
 	void SetConnected(bool connected);
 	bool IsConnected();
-	void SetGamepad(CONTROLLER_TYPE);
+	void SetGamepad(ControllerType);
 
 private:
 	ControllerState m_state;
 	std::mutex m_mutex;
 	bool m_connected = false;
-	std::atomic<CONTROLLER_TYPE> m_gamepad_type{ UNDEFINED };
+	std::atomic<ControllerType> m_gamepad_type = ControllerType::UNDEFINED;
 };
 
