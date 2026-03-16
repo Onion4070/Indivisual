@@ -3,23 +3,14 @@
 #include <wx/wx.h>
 #include "SerialUtils.h"
 
-#define DEBUG
-// インスタンス生成
-wxIMPLEMENT_APP(App);
-
-bool App::OnInit() {
-
-	// ターミナルを強制表示
-#ifdef DEBUG
-	AllocConsole();
-	FILE* fp;
-	freopen_s(&fp, "CONOUT$", "w", stdout);
-	freopen_s(&fp, "CONOUT$", "w", stderr);
-	freopen_s(&fp, "CONIN$", "r", stdin);
-
-	std::cout << "Debug mode: Terminal ready." << std::endl;
+#ifdef _DEBUG
+	// プロジェクト->プロパティ->リンカー->システム->サブシステム をコンソールに設定する必要あり
+	wxIMPLEMENT_APP_CONSOLE(App);
+#else
+	wxIMPLEMENT_APP(App);
 #endif
 
+bool App::OnInit() {
 	// タイトル設定
 	MainFrame* mainFrame = new MainFrame("Indivisual");
 
