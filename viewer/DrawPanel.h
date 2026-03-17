@@ -8,6 +8,8 @@
 #include <atomic>
 #include <chrono>
 
+enum class DpadDir { UP, DOWN, LEFT, RIGHT };
+
 class DrawPanel : public wxPanel
 {
 public:
@@ -20,7 +22,13 @@ private:
 
     // 描画コアロジック
     void ClearBackground(wxGCDC& gdc);
+    void DebugRender(wxGCDC& gdc, ControllerState& controller);
     void RenderFrame(wxGCDC& gdc);
+    void DrawStick(wxGCDC& gdc, int cx, int cy, int r, float sx, float sy, bool pressed, wxColour color);
+    void DrawDpadFrame(wxGCDC& gdc, int cx, int cy, int size);
+    void DrawDpad(wxGCDC& gdc, int cx, int cy, int size, DpadDir dir, bool pressed);
+    void DrawBtn(wxGCDC& gdc, int bx, int by, int btn_r, bool pressed, const wxString& label, wxColour color);
+    void DrawTrigger(wxGCDC& gdc, int tx, int ty, int w, int h, bool pressed, const wxString& label);
 
     ControllerStateManager& m_controller;
 
