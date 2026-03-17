@@ -15,7 +15,7 @@ bool App::OnInit() {
 	MainFrame* mainFrame = new MainFrame("Indivisual");
 
 	// フレームサイズ設定
-	mainFrame->SetSize(800, 600);
+	mainFrame->SetClientSize(800, 600);
 
 	// フレーム初期位置を中央に
 	mainFrame->Center();
