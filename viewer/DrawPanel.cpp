@@ -160,7 +160,7 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     DrawStick(gdc, rsx, rsy, stick_r, controller.rx, controller.ry, controller.btn_rstick, *wxYELLOW);
 
     // ===== 十字キー =====
-    const int size = std::min(H, W) * 0.04;
+    const int size = std::min(H, W) * 0.03;
     const int dpad_cx = W * 0.35;
     const int dpad_cy = H * 0.80;
 
@@ -172,39 +172,46 @@ void DrawPanel::RenderFrame(wxGCDC& gdc) {
     DrawDpad(gdc, dpad_cx, dpad_cy, size, DpadDir::RIGHT, controller.dpad_right);
     
     // ===== ABXYボタン =====
-    const int btn_r = std::min(W, H) * 0.05;
+    const int abxy_btn_r = std::min(W, H) * 0.05;
     const int abxy_cx = W * 0.78;
     const int abxy_cy = H * 0.55;
-    const int abxy_d = btn_r * 1.8;
-    DrawBtn(gdc, abxy_cx, abxy_cy - abxy_d, btn_r, controller.btn_x, "X", wxColour(100, 100, 255));
-    DrawBtn(gdc, abxy_cx, abxy_cy + abxy_d, btn_r, controller.btn_b, "B", wxColour(255, 100, 100));
-    DrawBtn(gdc, abxy_cx - abxy_d, abxy_cy, btn_r, controller.btn_y, "Y", wxColour(255, 200, 0));
-    DrawBtn(gdc, abxy_cx + abxy_d, abxy_cy, btn_r, controller.btn_a, "A", wxColour(100, 255, 100));
+    const int abxy_d = abxy_btn_r * 1.9;
+    DrawBtn(gdc, abxy_cx, abxy_cy - abxy_d, abxy_btn_r, controller.btn_x, "X", wxColour(100, 100, 255));
+    DrawBtn(gdc, abxy_cx, abxy_cy + abxy_d, abxy_btn_r, controller.btn_b, "B", wxColour(255, 100, 100));
+    DrawBtn(gdc, abxy_cx - abxy_d, abxy_cy, abxy_btn_r, controller.btn_y, "Y", wxColour(255, 200, 0));
+    DrawBtn(gdc, abxy_cx + abxy_d, abxy_cy, abxy_btn_r, controller.btn_a, "A", wxColour(100, 255, 100));
 
     // ===== +-ボタン =====
+    const int pm_btn_r = std::min(W, H) * 0.03;;
     const int pm_cx = W * 0.50;
     const int pm_cy = H * 0.40;
-    const int pm_d = btn_r * 4.2;
-    DrawBtn(gdc, pm_cx - pm_d, pm_cy, btn_r, controller.btn_minus, "-", wxColour(200, 200, 200));
-    DrawBtn(gdc, pm_cx + pm_d, pm_cy, btn_r, controller.btn_plus, "+", wxColour(200, 200, 200));
+    const int pm_d = pm_btn_r * 6.0;
+    DrawPlusMinus(gdc, pm_cx - pm_d, pm_cy, pm_btn_r, controller.btn_minus, false);
+    DrawPlusMinus(gdc, pm_cx + pm_d, pm_cy, pm_btn_r, controller.btn_plus, true);
 
     // ===== CaptureHomeボタン =====
     const int ch_cx = W * 0.50;
     const int ch_cy = H * 0.50;
-    const int ch_d = btn_r * 2.2;
-    DrawBtn(gdc, ch_cx - ch_d, ch_cy, btn_r, controller.btn_capture, "C", wxColour(60, 200, 200));
-    DrawBtn(gdc, ch_cx + ch_d, ch_cy, btn_r, controller.btn_home   , "H", wxColour(60, 200, 200));
-
+    const int ch_d = pm_btn_r * 2.2;
+    //DrawBtn(gdc, ch_cx - ch_d, ch_cy, pm_btn_r, controller.btn_capture, "C", wxColour(60, 200, 200));
+    //DrawBtn(gdc, ch_cx + ch_d, ch_cy, pm_btn_r, controller.btn_home   , "H", wxColour(60, 200, 200));
 
     // ===== LR/ZLZRボタン =====
-    const int lr_y = H * 0.22;
+    const int lr_y = H * 0.25;
     const int zlzr_y = H * 0.15;
-    const int lr_w = W * 0.10;
-    const int lr_h = H * 0.06;
+    const int lr_w = W * 0.12;
+    const int lr_h = H * 0.07;
     DrawTrigger(gdc, W * 0.22, lr_y, lr_w, lr_h, controller.btn_l, "L");
     DrawTrigger(gdc, W * 0.78, lr_y, lr_w, lr_h, controller.btn_r, "R");
     DrawTrigger(gdc, W * 0.22, zlzr_y, lr_w, lr_h, controller.btn_zl, "ZL");
     DrawTrigger(gdc, W * 0.78, zlzr_y, lr_w, lr_h, controller.btn_zr, "ZR");
+
+    // ===== 背面ボタン =====
+    const int gl_gr_y = H * 0.80;
+    const int gl_gr_w = W * 0.10;
+    const int gl_gr_h = H * 0.07;
+    DrawTrigger(gdc, W * 0.15, gl_gr_y, gl_gr_w, gl_gr_h, controller.btn_gl, "GL");
+    DrawTrigger(gdc, W * 0.85, gl_gr_y, gl_gr_w, gl_gr_h, controller.btn_gr, "GR");
 
 #ifdef _DEBUG
     DebugRender(gdc, controller);
@@ -246,7 +253,7 @@ void DrawPanel::DrawDpadFrame(wxGCDC& gdc, int cx, int cy, int size) {
     {cx - 3 * size, cy - size},
     };
     gdc.SetPen(wxPen(*wxWHITE, 2));
-    gdc.SetBrush(*wxTRANSPARENT_BRUSH); // 塗りつぶしなし
+    gdc.SetBrush(*wxTRANSPARENT_BRUSH);
     gdc.DrawPolygon(12, cross);
 }
 
@@ -291,6 +298,25 @@ void DrawPanel::DrawBtn(wxGCDC& gdc, int bx, int by, int btn_r, bool pressed, co
     int tw, th;
     gdc.GetTextExtent(label, &tw, &th);
     gdc.DrawText(label, bx - tw / 2, by - th / 2);
+}
+
+void DrawPanel::DrawPlusMinus(wxGCDC& gdc, int cx, int cy, int r, bool pressed, bool is_plus) {
+    gdc.SetPen(*wxTRANSPARENT_PEN);
+    gdc.SetBrush(pressed ? wxBrush(*wxWHITE) : wxBrush(wxColour(80, 80, 80)));
+    gdc.DrawCircle(cx, cy, r);
+
+    int bar_w = r * 0.55; // 横棒の半長
+    int bar_h = r * 0.12; // 棒の太さの半長
+    gdc.SetBrush(pressed ? wxBrush(*wxBLACK) : wxBrush(*wxWHITE));
+    gdc.SetPen(*wxTRANSPARENT_PEN);
+
+    // 横棒
+    gdc.DrawRectangle(cx - bar_w, cy - bar_h, bar_w * 2, bar_h * 2);
+
+    if (is_plus) {
+        // 縦棒
+        gdc.DrawRectangle(cx - bar_h, cy - bar_w, bar_h * 2, bar_w * 2);
+    }
 }
 
 void DrawPanel::DrawTrigger(wxGCDC& gdc, int tx, int ty, int w, int h, bool pressed, const wxString& label) {

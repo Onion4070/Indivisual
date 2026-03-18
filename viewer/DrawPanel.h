@@ -28,6 +28,7 @@ private:
     void DrawDpadFrame(wxGCDC& gdc, int cx, int cy, int size);
     void DrawDpad(wxGCDC& gdc, int cx, int cy, int size, DpadDir dir, bool pressed);
     void DrawBtn(wxGCDC& gdc, int bx, int by, int btn_r, bool pressed, const wxString& label, wxColour color);
+    void DrawPlusMinus(wxGCDC& gdc, int cx, int cy, int r, bool pressed, bool is_plus);
     void DrawTrigger(wxGCDC& gdc, int tx, int ty, int w, int h, bool pressed, const wxString& label);
 
     ControllerStateManager& m_controller;
